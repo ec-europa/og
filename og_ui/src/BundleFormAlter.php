@@ -62,18 +62,21 @@ class BundleFormAlter {
 
   /**
    * AJAX callback displaying the target bundles select box.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
-  public function ajaxCallback(array $form, array &$form_state) {
-    return $form['og']['target_bundles'];
+  public function ajaxCallback(array &$form, FormStateInterface $form_state) {
+    return $form['og']['og_target_bundles'];
   }
 
   /**
    * Prepares object properties and adds the og details element.
    *
    * @param array $form
-   * @param $form_state
+   * @param FormStateInterface $form_state
    */
-  protected function prepare(array &$form, $form_state) {
+  protected function prepare(array &$form, FormStateInterface $form_state) {
     // Example: article.
     $this->bundle = $this->entity->id();
     // Example: Article.
@@ -93,8 +96,11 @@ class BundleFormAlter {
 
   /**
    * Adds the "is group?" checkbox.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
-  protected function addGroupType(array &$form, $form_state) {
+  protected function addGroupType(array &$form, FormStateInterface $form_state) {
     if ($this->entity->isNew()) {
       $description = t('Every entity in this bundle is a group which can contain entities and can have members.');
     }
@@ -113,15 +119,21 @@ class BundleFormAlter {
 
   /**
    * Adds the "is group content?" checkbox and target settings elements.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
-  protected function addGroupContent(array &$form, $form_state) {
+  protected function addGroupContent(array &$form, FormStateInterface $form_state) {
     $is_group_content = Og::isGroupContent($this->entityTypeId, $this->bundle);
 
     $target_type_default = FALSE;
     $handler_settings = [];
     if ($field = FieldConfig::loadByName($this->entityTypeId, $this->bundle, OgGroupAudienceHelper::DEFAULT_FIELD)) {
       $handler_settings = $field->getSetting('handler_settings');
-      if (isset($handler_settings['target_type'])) {
+      if (!empty($form_state->getValue('og_target_type'))){
+        $target_type_default = $form_state->getValue('og_target_type');
+      }
+      else if (isset($handler_settings['target_type'])) {
         $target_type_default = $handler_settings['target_type'];
       }
     }
@@ -167,7 +179,7 @@ class BundleFormAlter {
         '#default_value' => $target_type_default,
         '#description' => t('The entity type that can be referenced through this field.'),
         '#ajax' => array(
-          'callback' => [$this, 'ajaxCallback'],
+          'callback' => [get_class($this), 'ajaxCallback'],
           'wrapper' => 'og-settings-wrapper',
         ),
         '#states' => array(
@@ -202,6 +214,9 @@ class BundleFormAlter {
 
   /**
    * Form validate handler.
+   *
+   * @param array $form
+   * @param \Drupal\Core\Form\FormStateInterface $form_state
    */
   public static function validateTargetBundleElement(array &$form, FormStateInterface $form_state) {
     // If no checkboxes were checked for 'og_target_bundles', store NULL ("all
