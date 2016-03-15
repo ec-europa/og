@@ -175,7 +175,12 @@ class Og {
 
     /** @var \Drupal\og\Entity\OgMembership $membership */
     foreach ($memberships as $membership) {
-      static::$entityGroupCache[$identifier][$membership->getGroupEntityType()][$membership->id()] = $membership->getGroup();
+      // If the membership points to a deleted group entity or a group scheduled for deletion then
+      // the group returned will be null and the membership is invalid.
+      $group = $membership->getGroup();
+      if ($group){
+        static::$entityGroupCache[$identifier][$membership->getGroupEntityType()][$membership->id()] = $membership->getGroup();
+      }
     }
 
     return static::$entityGroupCache[$identifier];
