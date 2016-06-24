@@ -246,11 +246,11 @@ class OgAccess implements OgAccessInterface {
       foreach ($groups as $entity_groups) {
         foreach ($entity_groups as $group) {
           $operation_access = $this->userAccessGroupContentEntityOperations($operation, $group, $entity, $user);
-          if ($operation_access->isAllowed()) {
+          if (!empty($operation_access) && $operation_access->isAllowed()) {
             return $operation_access->addCacheTags($cache_tags);
           }
           $user_access = $this->userAccess($group, $operation, $user);
-          if ($user_access->isAllowed()) {
+          if (!empty($user_access) && $user_access->isAllowed()) {
             return $user_access->addCacheTags($cache_tags);
           }
 
@@ -323,10 +323,11 @@ class OgAccess implements OgAccessInterface {
 
     // @todo Also deal with the use case that entity operations are granted to
     //   non-members.
-    $membership = Og::getMembership($user, $group_entity);
-    foreach ($permissions as $permission) {
-      if ($membership->hasPermission($permission->getName())) {
-        return AccessResult::allowed()->addCacheableDependency($cacheable_metadata);
+    if ($membership = Og::getMembership($user, $group_entity) {
+      foreach ($permissions as $permission) {
+        if ($membership->hasPermission($permission->getName())) {
+          return AccessResult::allowed()->addCacheableDependency($cacheable_metadata);
+        }
       }
     }
 
