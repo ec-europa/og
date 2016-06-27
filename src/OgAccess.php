@@ -323,7 +323,7 @@ class OgAccess implements OgAccessInterface {
 
     // @todo Also deal with the use case that entity operations are granted to
     //   non-members.
-    if ($membership = Og::getMembership($user, $group_entity) {
+    if ($membership = Og::getMembership($user, $group_entity)) {
       foreach ($permissions as $permission) {
         if ($membership->hasPermission($permission->getName())) {
           return AccessResult::allowed()->addCacheableDependency($cacheable_metadata);
