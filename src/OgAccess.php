@@ -31,6 +31,13 @@ class OgAccess implements OgAccessInterface {
   const ADMINISTER_GROUP_PERMISSION = 'administer group';
 
   /**
+   * Update group permission string.
+   *
+   * @var string
+   */
+  const UPDATE_GROUP_PERMISSION = 'update group';
+
+  /**
    * Static cache that contains cache permissions.
    *
    * @var array
@@ -136,6 +143,15 @@ class OgAccess implements OgAccessInterface {
       if ($user_access->isAllowed()) {
         return $user_access->addCacheableDependency($cacheable_metadata);
       }
+    }
+
+    // Update group special permission. At this point, the operation should have
+    // already been handled by Og. If the operation is edit, it is referring to
+    // the current group, so we have to map it to the special permission.
+    // This map occurs here and not in the userEntityAccess because all checks
+    // should pass through this function.
+    if ($operation == 'edit') {
+      $operation = OgAccess::UPDATE_GROUP_PERMISSION;
     }
 
     // Group manager has all privileges (if variable is TRUE) and they are
