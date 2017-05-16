@@ -9,12 +9,12 @@ use Drupal\og\Entity\OgRole;
  * Adds a role to a group membership.
  *
  * @Action(
- *   id = "og_membership_add_role_action",
+ *   id = "og_membership_add_single_role_action",
  *   label = @Translation("Add a role to the selected members"),
  *   type = "og_membership"
  * )
  */
-class AddOgMembershipRole extends ChangeOgMembershipRoleBase {
+class AddSingleOgMembershipRole extends ChangeSingleOgMembershipRoleBase {
 
   /**
    * {@inheritdoc}
@@ -29,8 +29,10 @@ class AddOgMembershipRole extends ChangeOgMembershipRoleBase {
       $membership->getGroup()->bundle(),
       $role_name,
     ]);
-    if (!in_array($role_id, $membership->getRolesIds())) {
-      $membership->addRole(OgRole::load($role_id))->save();
+    // Only add the role if it is valid and doesn't exist yet.
+    $role = OgRole::load($role_id);
+    if ($membership->isRoleValid($role) && !$membership->hasRole($role_id)) {
+      $membership->addRole($role)->save();
     }
   }
 
