@@ -221,18 +221,6 @@ class GroupTypeManager {
   }
 
   /**
-   * Get all group bundles keyed by entity type.
-   *
-   * @return array
-   *   An associative array, keyed by entity type, each value an indexed array
-   *   of bundle IDs.
-   */
-  public function getAllGroupBundles($entity_type = NULL) {
-    $group_map = $this->getGroupMap();
-    return !empty($group_map[$entity_type]) ? $group_map[$entity_type] : $group_map;
-  }
-
-  /**
    * Returns a list of all group content bundles keyed by entity type.
    *
    * This will return a simple list of group content bundles. If you need
