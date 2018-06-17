@@ -276,7 +276,7 @@ class GroupTypeManager {
    *
    * @see \Drupal\og\GroupTypeManager::getGroupRelationMap()
    */
-  public function getAllGroupContentBundlesByEntityType($entity_type_id) {
+  public function getAllGroupContentBundleIdsByEntityType($entity_type_id) {
     $bundles = $this->getAllGroupContentBundles();
     if (!isset($bundles[$entity_type_id])) {
       throw new \InvalidArgumentException("The '$entity_type_id' entity type has no group content bundles.");
