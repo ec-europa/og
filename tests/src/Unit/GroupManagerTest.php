@@ -205,7 +205,7 @@ class GroupManagerTest extends UnitTestCase {
    *
    * @covers ::getGroupBundleIdsByEntityType
    */
-  public function testGetGroupsForEntityType() {
+  public function testGetGroupBundleIdsForEntityType() {
     // It is expected that the group map will be retrieved from config.
     $groups = ['test_entity' => ['a', 'b']];
     $this->expectGroupMapRetrieval($groups);
