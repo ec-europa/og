@@ -215,7 +215,7 @@ class GroupTypeManager {
    * @return \Drupal\Core\Entity\EntityInterface[]
    *   Array of groups, or an empty array if none found
    */
-  public function getGroupsForEntityType($entity_type_id) {
+  public function getGroupBundleIdsByEntityType($entity_type_id) {
     $group_map = $this->getGroupMap();
     return isset($group_map[$entity_type_id]) ? $group_map[$entity_type_id] : [];
   }

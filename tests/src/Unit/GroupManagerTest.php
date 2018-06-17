@@ -203,17 +203,17 @@ class GroupManagerTest extends UnitTestCase {
   /**
    * Tests getting all the groups of an entity type.
    *
-   * @covers ::getGroupsForEntityType
+   * @covers ::getGroupBundleIdsByEntityType
    */
-  public function testGetGroupsForEntityType() {
+  public function testGetGroupBundleIdsForEntityType() {
     // It is expected that the group map will be retrieved from config.
     $groups = ['test_entity' => ['a', 'b']];
     $this->expectGroupMapRetrieval($groups);
 
     $manager = $this->createGroupManager();
 
-    $this->assertSame($groups['test_entity'], $manager->getGroupsForEntityType('test_entity'));
-    $this->assertSame([], $manager->getGroupsForEntityType('test_entity_non_existent'));
+    $this->assertSame($groups['test_entity'], $manager->getGroupBundleIdsByEntityType('test_entity'));
+    $this->assertSame([], $manager->getGroupBundleIdsByEntityType('test_entity_non_existent'));
   }
 
   /**
@@ -238,7 +238,7 @@ class GroupManagerTest extends UnitTestCase {
     // Add to existing.
     $manager->addGroup('test_entity', 'c');
 
-    $this->assertSame(['a', 'b', 'c'], $manager->getGroupsForEntityType('test_entity'));
+    $this->assertSame(['a', 'b', 'c'], $manager->getGroupBundleIdsByEntityType('test_entity'));
     $this->assertTrue($manager->isGroup('test_entity', 'c'));
   }
 
@@ -279,7 +279,7 @@ class GroupManagerTest extends UnitTestCase {
 
     // Add a new entity type.
     $manager->addGroup('test_entity_new', 'a');
-    $this->assertSame(['a'], $manager->getGroupsForEntityType('test_entity_new'));
+    $this->assertSame(['a'], $manager->getGroupBundleIdsByEntityType('test_entity_new'));
     $this->assertTrue($manager->isGroup('test_entity_new', 'a'));
   }
 
@@ -313,7 +313,7 @@ class GroupManagerTest extends UnitTestCase {
 
     // Add to existing.
     $manager->removeGroup('test_entity', 'b');
-    $this->assertSame(['a'], $manager->getGroupsForEntityType('test_entity'));
+    $this->assertSame(['a'], $manager->getGroupBundleIdsByEntityType('test_entity'));
     $this->assertFalse($manager->isGroup('test_entity', 'b'));
     $this->assertTrue($manager->isGroup('test_entity', 'a'));
   }
