@@ -80,7 +80,7 @@ class GroupTypeManager {
   /**
    * A map of entity types and bundles.
    *
-   * Do not access this property directly, use $this->getGroupMap() instead.
+   * Do not access this property directly, use $this->getAllGroupBundleIds() instead.
    *
    * @var array
    */
@@ -184,7 +184,7 @@ class GroupTypeManager {
    *   TRUE if a bundle is a group.
    */
   public function isGroup($entity_type_id, $bundle) {
-    $group_map = $this->getGroupMap();
+    $group_map = $this->getAllGroupBundleIds();
     return isset($group_map[$entity_type_id]) && in_array($bundle, $group_map[$entity_type_id]);
   }
 
@@ -216,7 +216,7 @@ class GroupTypeManager {
    *   Array of groups, or an empty array if none found
    */
   public function getGroupsForEntityType($entity_type_id) {
-    $group_map = $this->getGroupMap();
+    $group_map = $this->getAllGroupBundleIds();
     return isset($group_map[$entity_type_id]) ? $group_map[$entity_type_id] : [];
   }
 
@@ -228,7 +228,7 @@ class GroupTypeManager {
    *   of bundle IDs.
    */
   public function getAllGroupBundles($entity_type = NULL) {
-    $group_map = $this->getGroupMap();
+    $group_map = $this->getAllGroupBundleIds();
     return !empty($group_map[$entity_type]) ? $group_map[$entity_type] : $group_map;
   }
 
@@ -308,7 +308,7 @@ class GroupTypeManager {
       // If the group bundles are empty, it means that all bundles are
       // referenced.
       if (empty($group_bundle_ids)) {
-        $group_bundle_ids = $this->getGroupMap()[$group_entity_type_id];
+        $group_bundle_ids = $this->getAllGroupBundleIds()[$group_entity_type_id];
       }
 
       foreach ($group_bundle_ids as $group_bundle_id) {
@@ -437,7 +437,7 @@ class GroupTypeManager {
    * @return array
    *   The group map.
    */
-  public function getGroupMap() {
+  public function getAllGroupBundleIds() {
     if (empty($this->groupMap)) {
       $this->refreshGroupMap();
     }

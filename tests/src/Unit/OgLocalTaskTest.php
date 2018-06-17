@@ -71,7 +71,7 @@ class OgLocalTaskTest extends UnitTestCase {
 
     $this
       ->groupTypeManager
-      ->getGroupMap()
+      ->getAllGroupBundleIds()
       ->willReturn($group_map);
 
     foreach (array_keys($group_map) as $entity_type_id) {
