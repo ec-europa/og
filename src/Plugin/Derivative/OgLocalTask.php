@@ -59,7 +59,7 @@ class OgLocalTask extends DeriverBase implements ContainerDeriverInterface {
   public function getDerivativeDefinitions($base_plugin_definition) {
     $derivatives = [];
 
-    foreach (array_keys($this->groupTypeManager->getGroupMap()) as $entity_type_id) {
+    foreach (array_keys($this->groupTypeManager->getAllGroupBundleIds()) as $entity_type_id) {
       $route_name = "entity.$entity_type_id.og_admin_routes";
 
       if (!$this->routProvider->getRoutesByNames([$route_name])) {
